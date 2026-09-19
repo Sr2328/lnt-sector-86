@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #0c1a2e;
+  --color-navy: #0b2a5b;
+  --color-navy-deep: #071a3a;
+  --color-mist: #eaf0f8;  
+  --color-paper: #f6f8fb;
+  --color-gold: #f5b800;
+  --color-line: #d5deec;
+
+  --animate-marquee: marquee 45s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  --animate-ping-slow: ping-slow 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes ping-slow {
+
+    75%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+}
+
+@utility gutter {
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+@utility section-y {
+  padding-block: clamp(5rem, 11vw, 10rem);
+}
+
+html {
+  background: var(--color-paper);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-marquee,
+  .animate-ping-slow {
+    animation: none !important;
+  }
+}
+
+/* Highlights: horizontal pinned track, enabled by JS only when motion is allowed on wide screens */
+[data-hz="on"] {
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-block: 0;
+}
+
+[data-hz="on"] .hz-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: max-content;
+  gap: 1.25rem;
+}
+
+[data-hz="on"] .hz-intro {
+  width: clamp(300px, 32vw, 480px);
+  padding-right: 2.5rem;
+  padding-bottom: 0;
+}
+
+[data-hz="on"] .hz-card {
+  height: 68svh;
+  max-height: 640px;
+  width: clamp(320px, 36vw, 540px);
+  min-height: 0;
+}
+
+[data-hz="on"] .hz-end,
+[data-hz="on"] .hz-bar {
+  display: block;
+}
