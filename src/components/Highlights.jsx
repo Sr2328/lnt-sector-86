@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { gsap, NO_MOTION_PREF } from "../lib/gsap";
 import { HIGHLIGHTS } from "../data";
 import Img from "./Img";
@@ -11,30 +11,79 @@ const TONES = {
 
 function Card({ h }) {
   const solid = !h.img;
+  const revealImg = solid ? h.hoverImg : null; // only solid cards with a hoverImg are interactive
+  const interactive = Boolean(revealImg);
+  const [active, setActive] = useState(false); // click / tap / keyboard toggle
+
+  const toggle = () => interactive && setActive((v) => !v);
+
   return (
     <article
-      className={`hz-card relative flex min-h-[420px] w-full shrink-0 flex-col justify-between overflow-hidden rounded-[clamp(1.25rem,2.2vw,2rem)] p-[clamp(1.25rem,2vw,2rem)] ${
-        solid ? TONES[h.tone] : "bg-navy-deep text-white"
-      }`}
+      data-active={active}
+      role={interactive ? "button" : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      aria-pressed={interactive ? active : undefined}
+      onClick={toggle}
+      onKeyDown={(e) => {
+        if (interactive && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          toggle();
+        }
+      }}
+      className={`hz-card group relative flex min-h-[420px] w-full shrink-0 flex-col justify-between overflow-hidden rounded-[clamp(1.25rem,2.2vw,2rem)] p-[clamp(1.25rem,2vw,2rem)] transition-colors duration-500 ${solid ? TONES[h.tone] : "bg-navy-deep text-white"
+        } ${interactive
+          ? "cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-navy/40 hover:text-white data-[active=true]:text-white"
+          : ""
+        }`}
     >
+      {/* Always-visible image (cards with `img`) */}
       {!solid && (
         <>
           <Img src={h.img} alt="" className="absolute inset-0" />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/30 to-navy-deep/20" />
         </>
       )}
+
+      {/* Hover / click reveal image (solid cards with `hoverImg`) */}
+      {interactive && (
+        <>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 scale-110 opacity-0 transition-all duration-700 ease-out group-hover:scale-100 group-hover:opacity-100 group-data-[active=true]:scale-100 group-data-[active=true]:opacity-100"
+          >
+            <Img src={revealImg} alt="" className="absolute inset-0" />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/40 to-navy-deep/20" />
+          </div>
+
+          {/* Affordance so people know the card is interactive */}
+          <span
+            aria-hidden="true"
+            className="absolute right-5 top-5 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/10 text-lg transition-all duration-500 group-hover:rotate-45 group-hover:bg-white/20 group-data-[active=true]:rotate-45 group-data-[active=true]:bg-white/20"
+          >
+            ↗
+          </span>
+        </>
+      )}
+
       <span
-        className={`relative w-fit rounded-full px-3.5 py-1.5 text-[13px] font-medium ${
-          solid ? "bg-black/10" : "border border-white/30 bg-white/10 backdrop-blur-md"
-        }`}
+        className={`relative w-fit rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-500 ${solid
+            ? "bg-black/10 group-hover:border group-hover:border-white/30 group-hover:bg-white/10 group-hover:backdrop-blur-md group-data-[active=true]:border group-data-[active=true]:border-white/30 group-data-[active=true]:bg-white/10 group-data-[active=true]:backdrop-blur-md"
+            : "border border-white/30 bg-white/10 backdrop-blur-md"
+          }`}
       >
         {h.tag}
       </span>
+
       <div className="relative">
         <h3 className="font-display text-[clamp(1.6rem,2.6vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
           {h.title}
         </h3>
-        <p className={`mt-4 max-w-[38ch] leading-relaxed ${solid ? "opacity-80" : "text-white/80"}`}>{h.body}</p>
+        <p
+          className={`mt-4 max-w-[38ch] leading-relaxed transition-opacity duration-500 ${solid ? "opacity-80 group-hover:opacity-90 group-data-[active=true]:opacity-90" : "text-white/80"
+            }`}
+        >
+          {h.body}
+        </p>
       </div>
     </article>
   );
@@ -70,7 +119,10 @@ export default function Highlights() {
   return (
     <div id="highlights">
       <section ref={pin} className="relative overflow-hidden bg-mist py-[clamp(4rem,8vw,6rem)]">
-        <div ref={track} className="hz-track grid gap-4 gutter [grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))]">
+        <div
+          ref={track}
+          className="hz-track grid gap-4 gutter [grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))]"
+        >
           <div className="hz-intro col-span-full flex shrink-0 flex-col justify-center pb-6">
             <p className="flex items-center gap-2.5 text-[15px] font-medium text-navy">
               <span className="h-2.5 w-2.5 rounded-full bg-gold" />

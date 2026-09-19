@@ -16,7 +16,10 @@ import roadImg from "./assets/Hero-main.png";
 import campusImg from "./assets/Hero-main.png";
 import buildImg from "./assets/Hero-main.png";
 import heroMobile from "./assets/Mobile-hero.png"
-
+import Aerial from "./assets/AerialRoutes.png"
+import SpaciousImg from "./assets/Spacious.png"
+import LegacyImg from "./assets/Lagacy.png"
+import NeighbourhoodImg from "./assets/Neighbourhood.png"
 export const NAV = [
   ["Overview", "overview"],
   ["Highlights", "highlights"],
@@ -42,8 +45,12 @@ export const IMG = {
   exterior: exteriorImg,
   exterior2: exterior2Img,
   road: roadImg,
-  campus: campusImg,
+  campus: NeighbourhoodImg,
   build: buildImg,
+  Access: Aerial,
+  Spacious: SpaciousImg,
+  Legacy: LegacyImg
+
 };
 
 export const MARQUEE = [
@@ -79,24 +86,26 @@ export const HIGHLIGHTS = [
     title: "20 acres. 3.6 mn sq ft potential.",
     body: "Estimated development potential across the parcel, as announced by L&T.",
     tone: "gold",
+    hoverImg: IMG.skyline, // revealed on hover / click
   },
   {
     tag: "Homes",
     title: "3 & 4 BHK residences",
     body: "The configurations being marketed today. Sizes and layouts arrive with the official release.",
-    img: IMG.living,
+    img: IMG.Spacious,
   },
   {
     tag: "Access",
     title: "Three arterial routes",
     body: "Dwarka Expressway, NH-48 and the Southern Peripheral Road are cited as access routes to the site.",
     tone: "navy",
+    hoverImg: IMG.Access, // optional: same hover effect on the navy card
   },
   {
     tag: "Legacy",
     title: "Backed by Larsen & Toubro",
     body: "Founded in 1938, L&T builds airports, metros and power infrastructure across India.",
-    img: IMG.build,
+    img: IMG.Legacy,
   },
   {
     tag: "Neighbourhood",

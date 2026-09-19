@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap, NO_MOTION_PREF } from "../lib/gsap";
 import MaskText from "./MaskText";
+import Map from "../assets/Map.png"
 
 const ROUTES = [
   ["Dwarka Expressway", "Access towards Delhi and IGI Airport"],
@@ -20,34 +21,25 @@ export default function Location() {
     const mm = gsap.matchMedia();
     mm.add(NO_MOTION_PREF, () => {
       gsap.fromTo(
-        ".road",
-        { strokeDashoffset: 1 },
-        {
-          strokeDashoffset: 0,
-          duration: 1.8,
-          ease: "power2.inOut",
-          stagger: 0.25,
-          scrollTrigger: { trigger: ".loc-map", start: "top 70%", once: true },
-        }
-      );
-      gsap.fromTo(
-        ".pin-in",
-        { scale: 0, transformOrigin: "50% 50%" },
+        ".loc-img",
+        { scale: 1.12, opacity: 0 },
         {
           scale: 1,
-          duration: 0.9,
-          ease: "back.out(2)",
+          opacity: 1,
+          duration: 1.6,
+          ease: "power2.out",
           scrollTrigger: { trigger: ".loc-map", start: "top 70%", once: true },
         }
       );
       gsap.fromTo(
-        ".loc-label",
-        { opacity: 0 },
+        ".loc-chip",
+        { y: 12, opacity: 0 },
         {
+          y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          delay: 0.8,
+          duration: 0.7,
+          ease: "power2.out",
+          delay: 0.9,
           scrollTrigger: { trigger: ".loc-map", start: "top 70%", once: true },
         }
       );
@@ -89,6 +81,7 @@ export default function Location() {
           </ul>
           <p className="mt-4 text-sm text-ink/55">Distances are approximate, taken from marketing sources. Verify before relying on them.</p>
 
+
           <a
             href="https://www.google.com/maps/search/?api=1&query=Sector+86+Gurugram"
             target="_blank"
@@ -100,46 +93,23 @@ export default function Location() {
         </div>
 
         <div className="loc-map lg:col-span-7">
-          <div className="sticky top-24 overflow-hidden rounded-[clamp(1.25rem,2.4vw,2rem)] bg-white p-3 ring-1 ring-line">
-            <svg viewBox="0 0 640 520" className="h-auto w-full" role="img" aria-label="Schematic map of routes reaching Sector 86">
-              <defs>
-                <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-                  <path d="M32 0H0V32" fill="none" stroke="#d5deec" strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="640" height="520" rx="20" fill="#f6f8fb" />
-              <rect width="640" height="520" rx="20" fill="url(#grid)" opacity=".7" />
-
-              <g fill="none" stroke="#0b2a5b" strokeWidth="5" strokeLinecap="round">
-                <path className="road" pathLength="1" strokeDasharray="1" d="M30 130 C150 150 240 240 330 285" />
-                <path className="road" pathLength="1" strokeDasharray="1" d="M615 90 C520 150 430 225 330 285" />
-                <path className="road" pathLength="1" strokeDasharray="1" d="M600 450 C500 400 410 340 330 285" stroke="#f5b800" />
-              </g>
-
-              <g className="loc-label" fontFamily="DM Sans, sans-serif" fontSize="15" fontWeight="600" fill="#0c1a2e">
-                <text x="30" y="112">Dwarka Expressway</text>
-                <text x="612" y="68" textAnchor="end">NH-48</text>
-                <text x="596" y="478" textAnchor="end">Southern Peripheral Road</text>
-              </g>
-
-              <g className="loc-label" fontFamily="DM Sans, sans-serif" fontSize="13" fill="#0c1a2e">
-                <circle cx="248" cy="352" r="6" fill="#fff" stroke="#0b2a5b" strokeWidth="2.5" />
-                <text x="148" y="384">St. Andrews School ~1.8 km</text>
-                <circle cx="96" cy="300" r="6" fill="#fff" stroke="#0b2a5b" strokeWidth="2.5" />
-                <text x="40" y="282">K.R. Mangalam Univ. ~8 km</text>
-              </g>
-
-              <g className="pin-in">
-                <circle cx="330" cy="285" r="26" fill="#f5b800" opacity=".28" className="animate-ping-slow" style={{ transformOrigin: "330px 285px" }} />
-                <circle cx="330" cy="285" r="15" fill="#0b2a5b" />
-                <circle cx="330" cy="285" r="6" fill="#f5b800" />
-                <text x="356" y="278" fontFamily="Bricolage Grotesque, sans-serif" fontSize="19" fontWeight="700" fill="#0b2a5b">Sector 86</text>
-              </g>
-            </svg>
-            <p className="px-2 pb-1 pt-2 text-xs text-ink/50">Schematic, not to scale.</p>
+          <div className="sticky top-24 overflow-hidden rounded-[clamp(1.25rem,2.4vw,2rem)] bg-white ring-1 ring-line">
+            <div className="relative aspect-[640/520] w-full overflow-hidden">
+              <img
+                src={Map}
+                alt="Map showing routes reaching Sector 86, Gurugram"
+                className="loc-img h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="loc-chip absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-navy shadow-sm ring-1 ring-line">
+                <span className="h-2 w-2 rounded-full bg-gold" />
+                Sector 86, Gurugram
+              </span>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }
