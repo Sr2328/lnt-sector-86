@@ -64,7 +64,7 @@ export default function Overview() {
         <div className="mt-[clamp(3.5rem,8vw,7rem)] grid gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="ov-media relative aspect-[4/3] overflow-hidden lg:col-span-7 lg:aspect-auto lg:min-h-[560px]">
             <Img
-              src={IMG.exterior2}
+              src={IMG.OverView}
               alt="Illustrative residential architecture"
               className="absolute inset-0"
               imgClass="ov-img"

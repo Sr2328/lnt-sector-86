@@ -20,6 +20,7 @@ import Aerial from "./assets/AerialRoutes.png"
 import SpaciousImg from "./assets/Spacious.png"
 import LegacyImg from "./assets/Lagacy.png"
 import NeighbourhoodImg from "./assets/Neighbourhood.png"
+import OverviewImg from "./assets/OverviewImg.png"
 export const NAV = [
   ["Overview", "overview"],
   ["Highlights", "highlights"],
@@ -49,8 +50,8 @@ export const IMG = {
   build: buildImg,
   Access: Aerial,
   Spacious: SpaciousImg,
-  Legacy: LegacyImg
-
+  Legacy: LegacyImg,
+  OverView: OverviewImg,
 };
 
 export const MARQUEE = [
