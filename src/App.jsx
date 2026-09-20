@@ -12,6 +12,7 @@ import Amenities from "./components/Amenities";
 import Location from "./components/Location";
 import Gallery from "./components/Gallery";
 import Enquire from "./components/Enquire";
+import CookieConsent from "./components/CookieConsent";
 
 export default function App() {
   const [reveal, setReveal] = useState(false); // curtain starts lifting
@@ -52,6 +53,7 @@ export default function App() {
         <Gallery />
       </main>
       <Enquire />
+      <CookieConsent ready={loaded} />
     </>
   );
 }

@@ -21,7 +21,7 @@ export default function Gallery() {
             clipPath: "inset(0% 0% 0% 0% round 28px)",
             duration: 1.3,
             ease: "power4.out",
-            scrollTrigger: { trigger: item, start: "top 90%", once: true },
+            scrollTrigger: { trigger: item, start: "top 92%", once: true },
           }
         );
         gsap.fromTo(
@@ -70,13 +70,13 @@ export default function Gallery() {
           <p className="max-w-[40ch] text-ink/65">Illustrative imagery. Official renders will replace these after launch.</p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-3 md:grid-cols-12 md:auto-rows-[minmax(0,1fr)]">
+        <div className="mt-14 grid grid-cols-2 gap-3 auto-rows-[clamp(170px,44vw,280px)] md:grid-cols-12 md:auto-rows-[clamp(220px,21vw,320px)]">
           {GALLERY.map((g, i) => (
             <button
               key={g.caption}
               onClick={() => setOpen(i)}
               aria-label={`Open image: ${g.caption}`}
-              className={`g-item group relative overflow-hidden rounded-[28px] text-left ${g.span} ${g.ratio}`}
+              className={`g-item group relative h-full w-full overflow-hidden rounded-[28px] text-left ${g.span}`}
             >
               <Img src={g.src} alt={g.caption} className="absolute inset-0" overscan />
               <span className="absolute inset-0 bg-gradient-to-t from-navy-deep/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

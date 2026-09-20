@@ -1,12 +1,40 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { HOMES, HOME_FEATURES } from "../data";
+import { HOMES } from "../data";
 import { scrollToId } from "../lib/smooth";
 import Img from "./Img";
 import MaskText from "./MaskText";
+import FeatureLayoutsImg from "../assets/SpaciousLayout.png";
+import FeatureBalconiesImg from "../assets/Balcony.png";
+import FeatureCeilingsImg from "../assets/HighCeleing.png";
+import FeatureWindowsImg from "../assets/WideWindows.png";
+
+const FEATURE_PANELS = [
+  {
+    title: "Spacious layouts",
+    img: FeatureLayoutsImg,
+    desc: "Open, well-planned interiors with flowing living and dining spaces that make every square foot count.",
+  },
+  {
+    title: "Large balconies",
+    img: FeatureBalconiesImg,
+    desc: "Generous balconies that extend your living space outdoors, with open views across Sector 86.",
+  },
+  {
+    title: "High ceilings",
+    img: FeatureCeilingsImg,
+    desc: "Added ceiling height for an airy, premium feel with better natural light and ventilation.",
+  },
+  {
+    title: "Wide windows",
+    img: FeatureWindowsImg,
+    desc: "Expansive glazing that floods rooms with daylight and frames the skyline and greenery outside.",
+  },
+];
 
 export default function Residences() {
   const [id, setId] = useState(HOMES[0].id);
+  const [hot, setHot] = useState(null);
   const home = HOMES.find((h) => h.id === id);
 
   const request = () => {
@@ -36,9 +64,8 @@ export default function Residences() {
                 role="tab"
                 aria-selected={h.id === id}
                 onClick={() => setId(h.id)}
-                className={`relative z-10 rounded-full px-8 py-3 text-[15px] font-semibold transition-colors ${
-                  h.id === id ? "text-white" : "text-ink/70 hover:text-ink"
-                }`}
+                className={`relative z-10 rounded-full px-8 py-3 text-[15px] font-semibold transition-colors ${h.id === id ? "text-white" : "text-ink/70 hover:text-ink"
+                  }`}
               >
                 {h.id === id && (
                   <motion.span
@@ -107,13 +134,59 @@ export default function Residences() {
           </div>
         </div>
 
-        <div className="mt-16 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))]">
-          {HOME_FEATURES.map((f) => (
-            <div key={f} className="rounded-2xl border border-line px-5 py-5 font-display text-lg font-medium tracking-tight">
-              {f}
-            </div>
-          ))}
+        <div
+          className="mt-16 flex flex-col gap-3 lg:h-[clamp(420px,46vw,640px)] lg:flex-row lg:gap-0 lg:overflow-hidden lg:rounded-[clamp(1.25rem,2.4vw,2rem)]"
+          onMouseLeave={() => setHot(null)}
+        >
+          {FEATURE_PANELS.map((f, i) => {
+            const on = hot === i;
+            return (
+              <div
+                key={f.title}
+                tabIndex={0}
+                role="button"
+                aria-pressed={on}
+                onMouseEnter={() => setHot(i)}
+                onFocus={() => setHot(i)}
+                onBlur={() => setHot(null)}
+                onClick={() => setHot(on ? null : i)}
+                style={{ flexGrow: on ? 2.4 : 1 }}
+                className="relative h-[320px] cursor-pointer overflow-hidden rounded-3xl outline-none transition-[flex-grow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:h-auto lg:basis-0 lg:rounded-none lg:border-l lg:border-white/40 lg:first:border-l-0"
+              >
+                <div
+                  className={`absolute inset-0 transition-[filter,transform] duration-700 ${on ? "lg:scale-105 lg:grayscale-0" : "lg:grayscale"
+                    }`}
+                >
+                  <img
+                    src={f.img}
+                    alt={f.title}
+                    loading="eager"
+                    draggable={false}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/40 transition-opacity duration-700 ${on ? "opacity-100" : "opacity-70"
+                    }`}
+                />
+
+                <h4 className="absolute left-6 top-6 font-display text-[13px] font-semibold uppercase tracking-[0.28em] text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
+                  {f.title}
+                </h4>
+
+                <p
+                  className={`absolute inset-x-6 bottom-6 max-w-[34ch] text-[15px] leading-relaxed text-white transition-all duration-500 ${on
+                    ? "opacity-100 translate-y-0 lg:delay-150"
+                    : "opacity-100 translate-y-0 lg:translate-y-4 lg:opacity-0"
+                    }`}
+                >
+                  {f.desc}
+                </p>
+              </div>
+            );
+          })}
         </div>
+
         <p className="mt-4 text-sm text-ink/55">
           Home features are indicative and drawn from marketing material. Final specifications will be confirmed by L&amp;T Realty.
         </p>
