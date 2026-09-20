@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { Menu, X } from "lucide-react";
 import { NAV } from "../data";
 import { scrollToId } from "../lib/smooth";
-import logo from "../assets/Logo.png";
+import logo from "../assets/logo.png";
 
 export default function Navbar({ show }) {
   const [hidden, setHidden] = useState(false);
